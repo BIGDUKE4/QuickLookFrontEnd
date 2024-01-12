@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management</title>
+    <style>
+    
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hotel List</h1>
+    <table id="hotelTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Rooms</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="hotelList"></tbody>
+    </table>
+
+    <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('http://localhost:8080/all-hotels')  // Replace with your actual backend endpoint
+        .then(response => response.json())
+        .then(data => data.map(hotelTableRow))
+        .catch(error => console.error('Error fetching hotels:', error));
+
+    
+    
+
+    function deleteHotel(hotelId) {
+        fetch(`http://localhost:8080/delete-hotel/${hotelId}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById(hotelId).remove();
+            // Optionally, refresh the hotel list after deletion
+            fetch('http://localhost:8080/all-hotels')
+                .then(response => response.json())
+                .then(data => {
+                    // Clear the existing list
+                    hotelList.innerHTML = '';
+                    // Display the updated list
+                    displayHotels(data);
+                })
+                .catch(error => console.error('Error fetching hotels:', error));
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    const hotelTableBody = document.getElementById("hotelList");
+function hotelTableRow(hotel) {
+    const hotelTableRow = document.createElement("tr");
+    hotelTableRow.id = hotel.id;
+    hotelTableBody.appendChild(hotelTableRow);
+
+    constructHotelTableRow(hotelTableRow, hotel)
+}
+
+function constructHotelTableRow(tableRow, hotel) {
+    tableRow.innerHTML = `
+        <td><p> ${hotel.id}</p></td>
+        <td><p> ${hotel.name}</p></td>
+        <td><p> ${hotel.city}</p></td>
+        <td><p>${hotel.country}</p></td>
+        <td><p>${hotel.NumberOfRooms}</p></td>
+        <td>
+            <button id="delete-${hotel.id}">Delete</button>
+        </td>
+    `;
+    // Event Listener
+    document.getElementById("delete-"+hotel.id)
+        .addEventListener("click", () => deleteHotel(hotel.id))
+}
+
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management</title>
+</head>
+<body>
+    <h1>Create Room</h1>
+    <form id="createRoomForm">
+        <label for="numberOfBeds">Number of Beds:</label>
+        <input type="number" id="numberOfBeds" name="numberOfBeds" required>
+
+        <label for="roomNumber">Room Number:</label>
+        <input type="text" id="roomNumber" name="roomNumber" required>
+
+        <button type="button" onclick="createRoom()">Create Room</button>
+    </form>
+
+    <script>
+        function createRoom() {
+            var hotelId = prompt("Enter the Hotel ID:"); 
+
+            var numberOfBeds = document.getElementById('numberOfBeds').value;
+            var roomNumber = document.getElementById('roomNumber').value;
+
+            var roomDTO = {
+                numberOfBeds: numberOfBeds,
+                roomNumber: roomNumber,
+                created: null, 
+                updated: null 
+            };
+
+            fetch(`http://localhost:8080/create-room/${hotelId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(roomDTO),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Room created successfully!');
+                
+            })
+            .catch(error => console.error('Error creating room:', error));
+        }
+    </script>
+</body>
+</html>

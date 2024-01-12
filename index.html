@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/msnbc/Components/Photo_StoryLevel/080708/080708-earth%20hmed-10a.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            color: white;
+        }
+    
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+        }
+    
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to QuickBook</h1>
+        <h1>Hotel Management made smart.</h1>
+        <h2>Made quick.</h2>
+    </header>
+
+    <button onclick="navigateTo('CreateHotel.html')">Create Hotel</button>
+    <button onclick="navigateTo('AllHotels.html')">Get All Hotels</button>
+    <button onclick="navigateTo('FindHotel.html')">Find Hotel</button>
+    <button onclick="navigateTo('UpdateHotel.html')">Update Hotel</button>
+    <button onclick="navigateTo('CreateRoom.html')">Create Room</button>
+    <button onclick="navigateTo('CreateUser.html')">Create User</button>
+
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>

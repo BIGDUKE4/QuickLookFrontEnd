@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User</title>
+</head>
+<body>
+
+<h1>Create User</h1>
+
+<div>
+    <label for="username">Username:</label>
+    <input type="text" id="username" required>
+</div>
+
+<div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" required>
+</div>
+
+<button onclick="createUser()">Create User</button>
+
+<script>
+    function createUser() {
+        // Get values from input fields
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Create user object
+        const user = {
+            username: username,
+            password: password
+        };
+
+        // Send POST request to the server
+        fetch('http://localhost:8080/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to create user');
+            }
+        })
+        .then(createdUser => {
+            console.log('User created:', createdUser);
+            alert('User created successfully!');
+        })
+        .catch(error => {
+            console.error('Error creating user:', error.message);
+            alert('Failed to create user. Please try again.');
+        });
+    }
+</script>
+
+</body>
+</html>

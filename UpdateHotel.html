@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Hotel</title>
+</head>
+<h1> Hvis </h1>
+<body>
+
+    <label for="updateHotelId">Enter Hotel ID to Update:</label>
+    <input type="text" id="updateHotelId" placeholder="Enter Hotel ID">
+
+    <button onclick="getHotelToUpdate()">Get Hotel to Update</button>
+
+    <div id="updateHotelDetails"></div>
+
+    <label for="updatedName">Updated Name:</label>
+    <input type="text" id="updatedName" placeholder="Enter Updated Name">
+
+    <label for="updatedStreet">Updated Street:</label>
+    <input type="text" id="updatedStreet" placeholder="Enter Updated Street">
+
+    <label for="updatedCity">Updated City:</label>
+    <input type="text" id="updatedCity" placeholder="Enter Updated City">
+
+    <label for="updatedZip">Updated Zip:</label>
+    <input type="text" id="updatedZip" placeholder="Enter Updated Zip">
+
+    <label for="updatedCountry">Updated Country:</label>
+    <input type="text" id="updatedCountry" placeholder="Enter Updated Country">
+
+    <label for="updatedNumberOfRooms">Updated NumberOfRooms:</label>
+    <input type="text" id="updatedNumberOfRooms" placeholder="Enter Updated NumberOfRooms">
+
+    <label for="updatedNumberOfBeds">Updated numberOfBeds:</label>
+    <input type="text" id="updatedNumberOfBeds" placeholder="Enter Updated numberOfBeds">
+
+    <button onclick="updateHotel()">Update Hotel</button>
+
+    <script>
+        function getHotelToUpdate() {
+            var updateHotelId = document.getElementById("updateHotelId").value;
+
+            fetch(`http://localhost:8080/hotel-details/${updateHotelId}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayUpdateHotelDetails(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching hotel details for update:', error);
+                });
+        }
+
+        function displayUpdateHotelDetails(hotel) {
+            var updateHotelDetailsDiv = document.getElementById("updateHotelDetails");
+
+            if (hotel) {
+                updateHotelDetailsDiv.innerHTML = `
+                    <p><strong>ID:</strong> ${hotel.id}</p>
+                    <p><strong>Name:</strong> ${hotel.name}</p>
+                    <p><strong>Street:</strong> ${hotel.street}</p>
+                    <p><strong>City:</strong> ${hotel.city}</p>
+                    <p><strong>Zip:</strong> ${hotel.zip}</p>
+                    <p><strong>Country:</strong> ${hotel.country}</p>
+                    <p><strong>NumberOfRooms:</strong> ${hotel.numberOfRooms}</p>
+                    <p><strong>NumberOfBeds:</strong> ${hotel.numberOfBeds}</p>
+                `;
+            } else {
+                updateHotelDetailsDiv.innerHTML = '<p>Hotel not found</p>';
+            }
+        }
+
+        function updateHotel() {
+            var updateHotelId = document.getElementById("updateHotelId").value;
+            var updatedName = document.getElementById("updatedName").value;
+            var updatedStreet = document.getElementById("updatedStreet").value;
+            var updatedCity = document.getElementById("updatedCity").value;
+            var updatedZip = document.getElementById("updatedZip").value;
+            var updatedCountry = document.getElementById("updatedCountry").value;
+            var updatedNumberOfRooms = document.getElementById("updatedNumberOfRooms").value;
+            var updatedNumberOfBeds = document.getElementById("updatedNumberOfBeds").value;
+
+            fetch(`http://localhost:8080/update-hotel/${updateHotelId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: updatedName,
+                    street: updatedStreet,
+                    city: updatedCity,
+                    zip: updatedZip,
+                    country: updatedCountry,
+                    numberOfRooms: updatedNumberOfRooms,
+                    numberOfBeds: updatedNumberOfBeds,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Hotel updated successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error updating hotel:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>

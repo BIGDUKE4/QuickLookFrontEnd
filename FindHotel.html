@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Details</title>
+</head>
+<body>
+    <h1>Hotel Details</h1>
+    
+    <label for="hotelId">Enter Hotel ID:</label>
+    <input type="text" id="hotelId" placeholder="Enter Hotel ID">
+
+    <button onclick="getHotelDetails()">Get Details</button>
+
+    <div id="hotelDetails"></div>
+
+    <script>function getHotelDetails() {
+        var hotelId = document.getElementById("hotelId").value;
+    
+        // Lav en anmodning til din backend for at få hoteloplysninger
+        fetch(`http://localhost:8080/hotel-details/${hotelId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Vis hoteloplysninger på siden
+                displayHotelDetails(data);
+            })
+            .catch(error => {
+                console.error('Error fetching hotel details:', error);
+            });
+    }
+    
+    function displayHotelDetails(hotel) {
+        var hotelDetailsDiv = document.getElementById("hotelDetails");
+    
+        if (hotel) {
+            hotelDetailsDiv.innerHTML = `
+                <p><strong>ID:</strong> ${hotel.id}</p>
+                <p><strong>Name:</strong> ${hotel.name}</p>
+                <p><strong>Street:</strong> ${hotel.street}</p>
+                <p><strong>City:</strong> ${hotel.city}</p>
+                <p><strong>Number of Rooms:</strong> ${hotel.numberOfRooms}</p>
+            `;
+        } else {
+            hotelDetailsDiv.innerHTML = '<p>Hotel not found</p>';
+        }
+    }</script>
+</body>
+</html>
